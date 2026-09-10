@@ -42,6 +42,7 @@
     font-family:var(--sans);
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
     background-image:
       radial-gradient(ellipse 900px 500px at 15% -5%, rgba(242,184,75,0.06), transparent 60%),
       radial-gradient(ellipse 700px 500px at 100% 10%, rgba(224,102,95,0.05), transparent 55%);
@@ -79,10 +80,12 @@
     color:var(--text-faint);
     display:flex;
     align-items:center;
+    flex-wrap:wrap;
+    row-gap:6px;
     gap:10px;
     margin-bottom:18px;
   }
-  .eyebrow::before{ content:''; width:16px; height:1px; background:var(--border); display:inline-block; }
+  .eyebrow::before{ content:''; width:16px; height:1px; background:var(--border); display:inline-block; flex-shrink:0; }
   .eyebrow .path{ color:var(--amber); }
   .clock{ margin-left:auto; color:var(--text-faint); font-size:0.75rem; }
   h1.headline .accent{ position:relative; }
@@ -184,6 +187,7 @@
   .status-box{
     margin-top:40px;
     display:inline-block;
+    max-width:100%;
     background:var(--bg-panel);
     border:1px solid var(--border);
     border-radius:var(--radius);
@@ -191,6 +195,7 @@
     font-family:var(--mono);
     font-size:0.85rem;
     color:var(--text-dim);
+    overflow-wrap:break-word;
   }
   .status-box .prompt{ color:var(--text-faint); }
   .status-box .val{ color:var(--amber); }
@@ -230,9 +235,9 @@
   .chip-list{ display:flex; flex-direction:column; gap:10px; }
   .chip{
     font-family:var(--mono); font-size:0.86rem; color:var(--text); display:flex; align-items:center; gap:8px;
-    width:fit-content; transition:transform .18s var(--ease), color .18s ease;
+    width:fit-content; max-width:100%; transition:transform .18s var(--ease), color .18s ease;
   }
-  .chip::before{ content:'▸'; color:var(--amber); font-size:0.7rem; transition:transform .18s var(--ease); }
+  .chip::before{ content:'▸'; color:var(--amber); font-size:0.7rem; transition:transform .18s var(--ease); flex-shrink:0; }
   .chip:hover{ transform:translateX(4px); color:var(--amber); }
   .chip:hover::before{ transform:translateX(2px); }
 
@@ -247,7 +252,7 @@
     padding:24px 26px; display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
   }
   .pr-head:hover{ background:var(--bg-panel-2); }
-  .pr-left{ display:flex; gap:16px; align-items:flex-start; }
+  .pr-left{ display:flex; gap:16px; align-items:flex-start; min-width:0; }
   .pr-icon{
     width:34px; height:34px; border-radius:50%; background:var(--amber-dim); color:var(--amber);
     display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;
@@ -268,7 +273,7 @@
     0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(77,224,196,0.5); }
     50%{ opacity:0.6; box-shadow:0 0 0 4px rgba(77,224,196,0); }
   }
-  .badge{ position:relative; }
+  .badge{ position:relative; white-space:nowrap; }
   .badge::before{
     content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--amber);
     margin-right:5px; animation:pulseDot 1.8s ease-in-out infinite;
@@ -326,7 +331,7 @@
     background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
     padding:40px; font-family:var(--mono);
   }
-  .contact-line{ font-size:0.95rem; margin-bottom:14px; }
+  .contact-line{ font-size:0.95rem; margin-bottom:14px; overflow-wrap:break-word; }
   .contact-line .p1{ color:var(--text-faint); }
   .contact-line .p2{ color:var(--amber); }
   .contact-links{ margin-top:22px; display:flex; gap:24px; flex-wrap:wrap; }
@@ -354,6 +359,20 @@
     .menu-btn{ display:block; }
     .log-entry{ grid-template-columns:1fr; gap:6px; }
     .hero{ padding:70px 0 60px; }
+    .pr-head{ padding:20px; gap:12px; }
+    .pr-left{ gap:12px; }
+    .pr-body-inner{ padding:20px 20px 24px; }
+    .contact-box{ padding:26px; }
+  }
+  @media (max-width: 480px){
+    .wrap, .hero-inner, .nav-inner{ padding-left:18px; padding-right:18px; }
+    .eyebrow{ font-size:0.7rem; gap:8px; }
+    .eyebrow .clock{ display:none; }
+    .status-box{ padding:12px 16px; font-size:0.78rem; }
+    .stack-grid{ grid-template-columns:1fr; }
+    .pr-title{ font-size:1.05rem; }
+    .contact-box{ padding:20px; }
+    .contact-links{ gap:16px; }
   }
 </style>
 </head>
@@ -638,7 +657,7 @@
       <div class="contact-line">→ github <span class="p2">https://github.com/Godwin010</span></div>
       <div class="contact-line">→ linkedin <span class="p2">https://www.linkedin.com/in/godwin-agbatey-957683327/</span></div>
       <div class="contact-links">
-        <a href="mailto:agbteygodwin@gmail.com">Send an email</a>
+        <a href="mailto:agbateygodwin@gmail.com">Send an email</a>
         <a href="https://github.com/Godwin010" target="_blank" rel="noopener noreferrer">View GitHub</a>
         <a href="https://www.linkedin.com/in/godwin-agbatey-957683327/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
       </div>
