@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agbatey Godwin — Full-Stack Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E14;
+    --bg-panel:#12161F;
+    --bg-panel-2:#171C27;
+    --border:#232A38;
+    --border-soft:#1B212D;
+    --text:#E9E7E1;
+    --text-dim:#8B92A5;
+    --text-faint:#5A6272;
+    --amber:#d84d0d;
+    --amber-dim:rgba(255,194,77,0.15);
+    --amber-soft:rgba(255,194,77,0.4);
+    --coral:#FF6F67;
+    --coral-dim:rgba(255,111,103,0.15);
+    --teal:#4DE0C4;
+    --teal-dim:rgba(77,224,196,0.14);
+    --mono:'Space Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --sans:'Inter', -apple-system, sans-serif;
+    --radius:10px;
+    --maxw:1120px;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(242,184,75,0.06), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(224,102,95,0.05), transparent 55%);
+  }
+  ::selection{ background:var(--amber-dim); color:var(--amber); }
+  a{ color:inherit; text-decoration:none; }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+  .reveal.visible{ opacity:1; transform:translateY(0); }
+  .stagger-item{ opacity:0; transform:translateY(18px); transition:opacity .5s var(--ease), transform .5s var(--ease); }
+  .stagger-item.visible{ opacity:1; transform:translateY(0); }
+  .stagger-item:nth-of-type(1){ transition-delay:0s; }
+  .stagger-item:nth-of-type(2){ transition-delay:.1s; }
+  .stagger-item:nth-of-type(3){ transition-delay:.2s; }
+  .stagger-item:nth-of-type(4){ transition-delay:.3s; }
+
+  @keyframes floatA{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(30px,-24px) scale(1.06); }
+  }
+  @keyframes floatB{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-26px,20px) scale(1.08); }
+  }
+  @keyframes spinSlow{
+    to{ transform:rotate(360deg); }
+  }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+  .mono{ font-family:var(--mono); }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    color:var(--text-faint);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{ content:''; width:16px; height:1px; background:var(--border); display:inline-block; }
+  .eyebrow .path{ color:var(--amber); }
+  .clock{ margin-left:auto; color:var(--text-faint); font-size:0.75rem; }
+  h1.headline .accent{ position:relative; }
+  h1.headline .accent::after{
+    content:''; position:absolute; left:0; right:0; bottom:2px; height:8px;
+    background:linear-gradient(90deg, var(--amber), var(--coral));
+    opacity:0.28; z-index:-1; border-radius:3px;
+  }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(11,14,20,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:0 28px;
+    height:64px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{
+    font-family:var(--mono); font-weight:700; font-size:0.95rem; color:var(--text);
+    display:flex; align-items:center; gap:2px;
+  }
+  .logo .cursor{
+    display:inline-block; width:8px; height:16px; background:var(--amber);
+    margin-left:6px; animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+  nav.links{ display:flex; gap:6px; align-items:center; }
+  nav.links a{
+    font-family:var(--mono); font-size:0.82rem; color:var(--text-dim);
+    padding:8px 14px; border-radius:6px; position:relative; transition:color .15s ease;
+  }
+  nav.links a:hover{ color:var(--text); }
+  nav.links a.active{ color:var(--amber); }
+  nav.links a .num{ color:var(--text-faint); margin-right:4px; }
+  .nav-cta{
+    font-family:var(--mono); font-size:0.8rem; color:var(--bg);
+    background:var(--amber); padding:8px 16px; border-radius:6px; font-weight:700;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .nav-cta:hover{ transform:translateY(-1px); box-shadow:0 4px 20px rgba(242,184,75,0.25); }
+  .menu-btn{
+    display:none; background:none; border:1px solid var(--border); color:var(--text);
+    width:38px; height:38px; border-radius:6px; cursor:pointer; font-family:var(--mono);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:110px 0 90px;
+    position:relative;
+    border-bottom:1px solid var(--border-soft);
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--border-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    background-position:center -1px;
+    -webkit-mask-image:linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+    mask-image:linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  }
+  .blob{
+    position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; opacity:0.5;
+  }
+  .blob-1{ width:420px; height:420px; background:var(--amber); top:-160px; left:-80px; animation:floatA 13s ease-in-out infinite; opacity:0.16; }
+  .blob-2{ width:360px; height:360px; background:var(--coral); top:-40px; right:-100px; animation:floatB 15s ease-in-out infinite; opacity:0.13; }
+  .blob-3{ width:280px; height:280px; background:var(--teal); bottom:-140px; left:38%; animation:floatA 17s ease-in-out infinite reverse; opacity:0.1; }
+  .hero-inner{
+    max-width:var(--maxw); margin:0 auto; padding:0 28px;
+    position:relative; z-index:1;
+  }
+  h1.headline{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:clamp(2.1rem, 5.4vw, 4.4rem);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    max-width:15ch;
+    color:var(--text);
+  }
+  h1.headline .accent{ color:var(--amber); }
+  .subhead{
+    margin-top:26px;
+    max-width:56ch;
+    font-size:1.08rem;
+    color:var(--text-dim);
+  }
+  .status-box{
+    margin-top:40px;
+    display:inline-block;
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:14px 20px;
+    font-family:var(--mono);
+    font-size:0.85rem;
+    color:var(--text-dim);
+  }
+  .status-box .prompt{ color:var(--text-faint); }
+  .status-box .val{ color:var(--amber); }
+  .status-box .caret{
+    display:inline-block; width:7px; height:13px; background:var(--text-dim);
+    margin-left:4px; vertical-align:-2px; animation:blink 1.1s steps(1) infinite;
+  }
+  .hero-ctas{ margin-top:38px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--mono); font-size:0.85rem; padding:13px 24px; border-radius:7px;
+    display:inline-flex; align-items:center; gap:8px; transition:all .15s ease; cursor:pointer; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--amber); color:var(--bg); font-weight:700; box-shadow:0 0 0 rgba(255,194,77,0); }
+  .btn-primary:hover{ transform:translateY(-3px) scale(1.02); box-shadow:0 10px 30px rgba(255,194,77,0.3); }
+  .btn-primary:active{ transform:translateY(-1px) scale(0.99); }
+  .btn-ghost{ border-color:var(--border); color:var(--text); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); background:var(--teal-dim); transform:translateY(-3px); }
+  .btn-ghost:active{ transform:translateY(-1px); }
+
+  /* ---------- SECTION shell ---------- */
+  section{ padding:96px 0; border-bottom:1px solid var(--border-soft); }
+  .section-head{ margin-bottom:52px; }
+  h2.section-title{
+    font-family:var(--mono); font-weight:700; font-size:clamp(1.5rem, 3vw, 2.1rem);
+    color:var(--text);
+  }
+  .section-sub{ margin-top:12px; color:var(--text-dim); max-width:60ch; }
+
+  /* ---------- STACK ---------- */
+  .stack-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); border-radius:var(--radius); overflow:hidden; }
+  .stack-col{ background:var(--bg-panel); padding:26px 22px; transition:background .2s ease, opacity .5s var(--ease), transform .5s var(--ease); }
+  .stack-col:hover{ background:var(--bg-panel-2); }
+  .stack-col h3{
+    font-family:var(--mono); font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-faint); margin-bottom:16px;
+  }
+  .chip-list{ display:flex; flex-direction:column; gap:10px; }
+  .chip{
+    font-family:var(--mono); font-size:0.86rem; color:var(--text); display:flex; align-items:center; gap:8px;
+    width:fit-content; transition:transform .18s var(--ease), color .18s ease;
+  }
+  .chip::before{ content:'▸'; color:var(--amber); font-size:0.7rem; transition:transform .18s var(--ease); }
+  .chip:hover{ transform:translateX(4px); color:var(--amber); }
+  .chip:hover::before{ transform:translateX(2px); }
+
+  /* ---------- CASE STUDIES ---------- */
+  .pr-card{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    margin-bottom:18px; overflow:hidden; transition:transform .2s var(--ease), border-color .2s ease, box-shadow .2s ease, opacity .5s var(--ease);
+  }
+  .pr-card:hover{ transform:translateY(-3px); border-color:var(--text-faint); box-shadow:0 14px 34px rgba(0,0,0,0.35); }
+  .pr-head{
+    width:100%; background:none; border:none; color:inherit; text-align:left; cursor:pointer;
+    padding:24px 26px; display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+  }
+  .pr-head:hover{ background:var(--bg-panel-2); }
+  .pr-left{ display:flex; gap:16px; align-items:flex-start; }
+  .pr-icon{
+    width:34px; height:34px; border-radius:50%; background:var(--amber-dim); color:var(--amber);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;
+    transition:transform .3s var(--ease);
+  }
+  .pr-card:hover .pr-icon{ transform:rotate(-14deg) scale(1.08); }
+  .pr-card:nth-child(2) .pr-icon{ background:var(--coral-dim); color:var(--coral); }
+  .pr-card:nth-child(3) .pr-icon{ background:var(--teal-dim); color:var(--teal); }
+  .pr-card:nth-child(2) .badge{ background:var(--coral-dim); color:var(--coral); }
+  .pr-card:nth-child(2) .badge::before{ background:var(--coral); box-shadow:0 0 0 0 rgba(255,111,103,0.5); animation-name:pulseDotCoral; }
+  .pr-card:nth-child(3) .badge{ background:var(--teal-dim); color:var(--teal); }
+  .pr-card:nth-child(3) .badge::before{ background:var(--teal); animation-name:pulseDotTeal; }
+  @keyframes pulseDotCoral{
+    0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(255,111,103,0.5); }
+    50%{ opacity:0.6; box-shadow:0 0 0 4px rgba(255,111,103,0); }
+  }
+  @keyframes pulseDotTeal{
+    0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(77,224,196,0.5); }
+    50%{ opacity:0.6; box-shadow:0 0 0 4px rgba(77,224,196,0); }
+  }
+  .badge{ position:relative; }
+  .badge::before{
+    content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--amber);
+    margin-right:5px; animation:pulseDot 1.8s ease-in-out infinite;
+  }
+  @keyframes pulseDot{
+    0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(255,194,77,0.5); }
+    50%{ opacity:0.6; box-shadow:0 0 0 4px rgba(255,194,77,0); }
+  }
+  .pr-title-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .pr-title{ font-size:1.15rem; font-weight:700; color:var(--text); }
+  .pr-num{ font-family:var(--mono); color:var(--text-faint); font-size:0.85rem; }
+  .badge{
+    font-family:var(--mono); font-size:0.68rem; letter-spacing:0.05em; text-transform:uppercase;
+    padding:3px 9px; border-radius:20px; background:var(--amber-dim); color:var(--amber); font-weight:700;
+  }
+  .pr-desc{ color:var(--text-dim); font-size:0.94rem; max-width:60ch; }
+  .pr-stats{ display:flex; gap:22px; margin-top:14px; flex-wrap:wrap; }
+  .stat{ font-family:var(--mono); font-size:0.85rem; }
+  .stat .n{ color:var(--amber); font-weight:700; }
+  .pr-chevron{ font-family:var(--mono); color:var(--text-faint); transition:transform .2s ease; flex-shrink:0; margin-top:6px; }
+  .pr-card.open .pr-chevron{ transform:rotate(180deg); }
+  .pr-body{
+    max-height:0; overflow:hidden; transition:max-height .35s ease;
+    border-top:1px solid transparent;
+  }
+  .pr-card.open .pr-body{ border-top:1px solid var(--border); }
+  .pr-body-inner{ padding:24px 26px 28px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:26px; }
+  .pr-body-inner h4{
+    font-family:var(--mono); font-size:0.7rem; letter-spacing:0.07em; text-transform:uppercase;
+    color:var(--coral); margin-bottom:10px;
+  }
+  .pr-body-inner p{ color:var(--text-dim); font-size:0.9rem; }
+  .tech-tags{ grid-column:1/-1; display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; padding-top:18px; border-top:1px solid var(--border-soft); }
+  .tag{
+    font-family:var(--mono); font-size:0.75rem; color:var(--text-dim); background:var(--bg-panel-2);
+    border:1px solid var(--border); padding:5px 11px; border-radius:5px;
+    transition:transform .15s var(--ease), border-color .15s ease, color .15s ease;
+  }
+  .tag:hover{ transform:translateY(-2px); border-color:var(--amber-soft); color:var(--amber); }
+
+  /* ---------- LOG (experience) ---------- */
+  .log-entry{ display:grid; grid-template-columns:120px 1fr; gap:28px; padding:26px 0; border-top:1px solid var(--border-soft); transition:padding-left .25s var(--ease), opacity .6s var(--ease), transform .6s var(--ease); }
+  .log-entry:hover{ padding-left:8px; }
+  .log-entry:hover .log-hash{ color:var(--coral); }
+  .log-hash{ transition:color .2s ease; }
+  .log-entry:last-child{ border-bottom:1px solid var(--border-soft); }
+  .log-hash{ font-family:var(--mono); font-size:0.82rem; color:var(--amber); padding-top:2px; }
+  .log-date{ display:block; font-family:var(--mono); font-size:0.72rem; color:var(--text-faint); margin-top:6px; }
+  .log-role{ font-weight:700; font-size:1.05rem; margin-bottom:6px; }
+  .log-company{ color:var(--coral); font-weight:600; }
+  .log-desc{ color:var(--text-dim); font-size:0.92rem; max-width:65ch; }
+
+  /* ---------- CONTACT ---------- */
+  .contact-box{
+    background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius);
+    padding:40px; font-family:var(--mono);
+  }
+  .contact-line{ font-size:0.95rem; margin-bottom:14px; }
+  .contact-line .p1{ color:var(--text-faint); }
+  .contact-line .p2{ color:var(--amber); }
+  .contact-links{ margin-top:22px; display:flex; gap:24px; flex-wrap:wrap; }
+  .contact-links a{ font-size:0.9rem; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:2px; transition:border-color .15s ease, color .15s ease; }
+  .contact-links a:hover{ color:var(--amber); border-color:var(--amber); }
+
+  footer{ padding:36px 0; text-align:center; }
+  footer p{ font-family:var(--mono); font-size:0.78rem; color:var(--text-faint); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 860px){
+    .stack-grid{ grid-template-columns:repeat(2, 1fr); }
+    .pr-body-inner{ grid-template-columns:1fr; gap:18px; }
+    section{ padding:64px 0; }
+  }
+  @media (max-width: 680px){
+    nav.links{
+      position:fixed; top:64px; left:0; right:0; background:var(--bg);
+      border-bottom:1px solid var(--border-soft); flex-direction:column; align-items:stretch;
+      padding:10px 20px 20px; gap:2px; transform:translateY(-110%); transition:transform .2s ease; z-index:99;
+    }
+    nav.links.open{ transform:translateY(0); }
+    nav.links a{ padding:12px 6px; border-bottom:1px solid var(--border-soft); }
+    .nav-cta{ display:none; }
+    .menu-btn{ display:block; }
+    .log-entry{ grid-template-columns:1fr; gap:6px; }
+    .hero{ padding:70px 0 60px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="logo">~/Godwin<span class="cursor" aria-hidden="true"></span></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">☰</button>
+    <nav class="links" id="navLinks">
+      <a href="#work"><span class="num">01</span>work</a>
+      <a href="#stack"><span class="num">02</span>stack</a>
+      <a href="#log"><span class="num">03</span>log</a>
+      <a href="#contact"><span class="num">04</span>contact</a>
+      <a href="#contact" class="nav-cta">get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="blob blob-1" aria-hidden="true"></div>
+  <div class="blob blob-2" aria-hidden="true"></div>
+  <div class="blob blob-3" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="eyebrow"><span class="path">full-stack developer</span> — react · next.js · node · postgres <span class="clock mono" id="liveClock" aria-hidden="true"></span></p>
+    <h1 class="headline" id="typedHeadline" aria-label="I ship complete web applications — from UI design to cloud deployment.">I build modern web apps — <span class="accent">from pixel</span> to database.</h1>
+    <p class="subhead">Full-stack developer with a foundation in Computer Science and Visual Communication Design. Focused on building responsive frontends, scalable backends, and containerized workflows where interface quality meets clean infrastructure.</p>
+    <div class="status-box">
+      <span class="prompt">$</span> status --current<br>
+      <span class="val">→ available for software development roles &amp; freelance projects</span><span class="caret" aria-hidden="true"></span> 
+    </div>
+    <div class="hero-ctas">
+      <a href="#work" class="btn btn-primary">View selected work →</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="path">02</span> // dependencies</p>
+      <h2 class="section-title">What I build with</h2>
+      <p class="section-sub">Grouped by the layer they operate on — the tools and technologies I use to take projects from concept to production.</p>
+    </div>
+    <div class="stack-grid reveal">
+      <div class="stack-col stagger-item">
+        <h3>Frontend</h3>
+        <div class="chip-list">
+          <span class="chip">React</span>
+          <span class="chip">Next.js</span>
+          <span class="chip">TypeScript</span>
+          <span class="chip">JavaScript</span>
+          <span class="chip">Tailwind CSS</span>
+          <span class="chip">HTML5 / CSS3</span>
+        </div>
+      </div>
+      <div class="stack-col stagger-item">
+        <h3>Backend &amp; Data</h3>
+        <div class="chip-list">
+          <span class="chip">Node.js</span>
+          <span class="chip">Express</span>
+          <span class="chip">PostgreSQL</span>
+          <span class="chip">SQL / DBeaver</span>
+          <span class="chip">REST APIs</span>
+        </div>
+      </div>
+      <div class="stack-col stagger-item">
+        <h3>Infra &amp; DevOps</h3>
+        <div class="chip-list">
+          <span class="chip">Docker</span>
+          <span class="chip">Git / GitHub</span>
+          <span class="chip">Turbopack</span>
+          <span class="chip">Vercel</span>
+        </div>
+      </div>
+      <div class="stack-col stagger-item">
+        <h3>Design &amp; AI QA</h3>
+        <div class="chip-list">
+          <span class="chip">Figma</span>
+          <span class="chip">Visual Communication</span>
+          <span class="chip">VS Code</span>
+          <span class="chip">AI Data Annotation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="path">01</span> // selected-work</p>
+      <h2 class="section-title">Featured Projects</h2>
+      <p class="section-sub">A look at software solutions, open-source contributions, and full-stack systems I've engineered.</p>
+    </div>
+
+    <div class="pr-card stagger-item" data-open="false">
+      <button class="pr-head" aria-expanded="false">
+        <div class="pr-left">
+          <div class="pr-icon" aria-hidden="true">⑂</div>
+          <div>
+            <div class="pr-title-row">
+              <span class="pr-title">Inventrack — Inventory Management System</span>
+              <span class="pr-num">#open-source</span>
+              <span class="badge">Active</span>
+            </div>
+            <p class="pr-desc">Configured and optimized local containerized development environments and repository architecture.</p>
+            <div class="pr-stats">
+              <span class="stat"><span class="n">Dockerized</span> PostgreSQL DB</span>
+              <span class="stat"><span class="n">Next.js</span> Turbopack build</span>
+            </div>
+          </div>
+        </div>
+        <span class="pr-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="pr-body">
+        <div class="pr-body-inner">
+          <div>
+            <h4>Problem</h4>
+            <p>Inconsistent developer environments and build cache issues caused setup bottlenecks when onboarding or running local builds for inventory tracking functionality.</p>
+          </div>
+          <div>
+            <h4>Approach</h4>
+            <p>Containerized the PostgreSQL database using Docker, resolved Turbopack cache synchronization issues, and standardized development workflow scripts.</p>
+          </div>
+          <div>
+            <h4>Result</h4>
+            <p>Created a stable setup environment that allows smooth local development, database seeding, and clean pull request workflows on GitHub.</p>
+          </div>
+          <div class="tech-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Docker</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-card stagger-item" data-open="false">
+      <button class="pr-head" aria-expanded="false">
+        <div class="pr-left">
+          <div class="pr-icon" aria-hidden="true">⑂</div>
+          <div>
+            <div class="pr-title-row">
+              <span class="pr-title">Ghana Logistics Web Application</span>
+              <span class="pr-num">#client</span>
+              <span class="badge">Deployed</span>
+            </div>
+            <p class="pr-desc">Co-developed a custom management and package/shipment tracking application for a Ghana-based logistics firm.</p>
+            <div class="pr-stats">
+              <span class="stat"><span class="n">End-to-End</span> Operations</span>
+              <span class="stat"><span class="n">Real-time</span> Tracking</span>
+            </div>
+          </div>
+        </div>
+        <span class="pr-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="pr-body">
+        <div class="pr-body-inner">
+          <div>
+            <h4>Problem</h4>
+            <p>Manual dispatch processes and fragmented shipment status updates made tracking items inefficient for both internal operations and customers.</p>
+          </div>
+          <div>
+            <h4>Approach</h4>
+            <p>Architected a modular full-stack application connecting structured relational database schemas with an intuitive management dashboard and customer lookup portal.</p>
+          </div>
+          <div>
+            <h4>Result</h4>
+            <p>Streamlined internal logistics operations, simplified cargo tracking, and automated status handling across the logistics pipeline.</p>
+          </div>
+          <div class="tech-tags">
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Express</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Tailwind CSS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pr-card stagger-item" data-open="false">
+      <button class="pr-head" aria-expanded="false">
+        <div class="pr-left">
+          <div class="pr-icon" aria-hidden="true">⑂</div>
+          <div>
+            <div class="pr-title-row">
+              <span class="pr-title">Relational Database &amp; Data Pipeline Tasks</span>
+              <span class="pr-num">#database</span>
+              <span class="badge">Completed</span>
+            </div>
+            <p class="pr-desc">Structured database schemas, aggregation queries, and data processing routines for analytical systems.</p>
+            <div class="pr-stats">
+              <span class="stat"><span class="n">DBeaver</span> &amp; SQL</span>
+              <span class="stat"><span class="n">Data Quality</span> &amp; QA</span>
+            </div>
+          </div>
+        </div>
+        <span class="pr-chevron" aria-hidden="true">▾</span>
+      </button>
+      <div class="pr-body">
+        <div class="pr-body-inner">
+          <div>
+            <h4>Problem</h4>
+            <p>Raw and unstructured data required rigorous validation, schema constraints, and efficient query pipelines for downstream analytics and application use.</p>
+          </div>
+          <div>
+            <h4>Approach</h4>
+            <p>Implemented relational schema blueprints in PostgreSQL via DBeaver, executed complex aggregations, and applied AI data annotation/classification workflows.</p>
+          </div>
+          <div>
+            <h4>Result</h4>
+            <p>Ensured high data integrity, accurate query evaluation, and structured analytical reporting for backend applications.</p>
+          </div>
+          <div class="tech-tags">
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">SQL</span>
+            <span class="tag">DBeaver</span>
+            <span class="tag">Data QA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="log">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="path">03</span> // git-log --experience</p>
+      <h2 class="section-title">Education &amp; Experience</h2>
+      <p class="section-sub">My technical journey across software development, remote freelancing, and computer science studies.</p>
+    </div>
+
+    <div class="log-entry reveal">
+      <div><span class="log-hash">e4a1029</span><span class="log-date">Present</span></div>
+      <div>
+        <div class="log-role">Diploma in Computer Science <span class="log-company">@ Ghana Communication Technology University</span></div>
+        <p class="log-desc">Focusing on advanced data structures, web engineering, database administration, network basics, and software architecture.</p>
+      </div>
+    </div>
+    <div class="log-entry reveal">
+      <div><span class="log-hash">9f3a21c</span><span class="log-date">2024 — Present</span></div>
+      <div>
+        <div class="log-role">Full-Stack Software Developer <span class="log-company">@ Freelance &amp; Client Projects</span></div>
+        <p class="log-desc">Building production-ready web applications, containerizing backend environments, collaborating on logistics systems, and contributing to open-source software on GitHub.</p>
+      </div>
+    </div>
+    <div class="log-entry reveal">
+      <div><span class="log-hash">6b02de4</span><span class="log-date">2024 — Present</span></div>
+      <div>
+        <div class="log-role">AI Data Specialist &amp; Evaluator <span class="log-company">@ Remote Platforms</span></div>
+        <p class="log-desc">Performing AI model training data annotation, text classification, audio transcription, and data quality assurance across remote tasks.</p>
+      </div>
+    </div>
+    <div class="log-entry reveal">
+      <div><span class="log-hash">c481f09</span><span class="log-date">2024</span></div>
+      <div>
+        <div class="log-role">Visual Communication Design Studies <span class="log-company">@ Accra Technical University</span></div>
+        <p class="log-desc">Developed strong foundations in digital UI layout, typography, graphic design principles, and visual branding before transitioning to full-time CS studies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="path">04</span> // contact</p>
+      <h2 class="section-title">Let's build something</h2>
+      <p class="section-sub">Open for freelance projects, full-stack developer roles, and open-source collaborations.</p>
+    </div>
+    <div class="contact-box reveal">
+      <div class="contact-line"><span class="p1">$</span> contact --me</div>
+      <div class="contact-line">→ email <span class="p2">agbateygodwin@gmail.com</span></div>
+      <div class="contact-line">→ github <span class="p2">https://github.com/Godwin010</span></div>
+      <div class="contact-line">→ linkedin <span class="p2">https://www.linkedin.com/in/godwin-agbatey-957683327/</span></div>
+      <div class="contact-links">
+        <a href="mailto:agbteygodwin@gmail.com">Send an email</a>
+        <a href="https://github.com/Godwin010" target="_blank" rel="noopener noreferrer">View GitHub</a>
+        <a href="https://www.linkedin.com/in/godwin-agbatey-957683327/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>// Built by Godwin Agbatey — 2026</p>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Active section highlighting
+  const sections = ['work','stack','log','contact'].map(id => document.getElementById(id));
+  const navAnchors = Array.from(document.querySelectorAll('nav.links a[href^="#"]'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navAnchors.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && observer.observe(s));
+
+  // Scroll reveal
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealTargets = document.querySelectorAll('.reveal, .stagger-item');
+  if (prefersReduced) {
+    revealTargets.forEach(el => el.classList.add('visible'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealTargets.forEach(el => revealObserver.observe(el));
+  }
+
+  // Typing effect for hero headline
+  const headlineEl = document.getElementById('typedHeadline');
+  if (headlineEl && !prefersReduced) {
+    const full = headlineEl.getAttribute('aria-label');
+    const accentStart = full.indexOf('from pixel');
+    const accentEnd = accentStart + 'from pixel'.length;
+    headlineEl.textContent = '';
+    headlineEl.setAttribute('aria-hidden', 'true');
+    let i = 0;
+    function typeChar(){
+      if (i <= full.length) {
+        const plain = full.slice(0, i);
+        if (i <= accentStart) {
+          headlineEl.textContent = plain;
+        } else {
+          const before = full.slice(0, accentStart);
+          const accentPart = full.slice(accentStart, Math.min(i, accentEnd));
+          const after = i > accentEnd ? full.slice(accentEnd, i) : '';
+          headlineEl.innerHTML = before + '<span class="accent">' + accentPart + '</span>' + after;
+        }
+        i++;
+        setTimeout(typeChar, 22);
+      }
+    }
+    typeChar();
+  }
+
+  // Live clock in eyebrow
+  const clockEl = document.getElementById('liveClock');
+  if (clockEl) {
+    function tick(){
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
+      const ss = String(now.getSeconds()).padStart(2,'0');
+      clockEl.textContent = `${hh}:${mm}:${ss}`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  // Animated stat counters (run once when a card first opens or scrolls into view)
+  function animateStat(el){
+    if (el.dataset.animated) return;
+    el.dataset.animated = 'true';
+    const raw = el.textContent.trim();
+    const match = raw.match(/^([+\-−]?)(\d+(?:\.\d+)?)(.*)$/);
+    if (!match || prefersReduced) return;
+    const [, sign, numStr, suffix] = match;
+    const target = parseFloat(numStr);
+    const decimals = numStr.includes('.') ? 1 : 0;
+    const duration = 900;
+    const startTime = performance.now();
+    function frame(now){
+      const p = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = (target * eased).toFixed(decimals);
+      el.textContent = `${sign}${val}${suffix}`;
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateStat(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.stat .n').forEach(el => statObserver.observe(el));
+
+  // Expandable PR cards
+  document.querySelectorAll('.pr-card').forEach(card => {
+    const head = card.querySelector('.pr-head');
+    const body = card.querySelector('.pr-body');
+    head.addEventListener('click', () => {
+      const isOpen = card.classList.contains('open');
+      if (isOpen) {
+        body.style.maxHeight = null;
+        card.classList.remove('open');
+        head.setAttribute('aria-expanded', 'false');
+      } else {
+        card.classList.add('open');
+        head.setAttribute('aria-expanded', 'true');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    });
+  });
+  // Recalculate open card heights on resize (responsive text reflow)
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.pr-card.open .pr-body').forEach(body => {
+      body.style.maxHeight = body.scrollHeight + 'px';
+    });
+  });
+
+  
+</script>
+
+</body>
+</html>
